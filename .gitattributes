@@ -1,0 +1,10 @@
+# Forzar que todos los archivos de texto se normalicen a LF al entrar al repo
+* text=auto
+
+# Asegurar que archivos específicos siempre usen LF (ideal para scripts de Linux)
+*.sh text eol=lf
+
+# Evitar que archivos binarios se corrompan
+*.png binary
+*.jpg binary
+*.jar binary
