@@ -1,0 +1,376 @@
+.register-wrapper {
+	display: flex;
+    flex-direction: column;
+	min-height: 100vh;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	position: relative;
+}
+
+.register-wrapper::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+	background-size: 60px 60px;
+	opacity: 0.35;
+	pointer-events: none;
+}
+
+.register-card {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: row-reverse;
+	width: min(100%, 1200px);
+	min-height: 590px;
+	border-radius: 36px;
+	overflow: hidden;
+	background-color: #436655;
+	box-shadow: 0 18px 40px rgba(18, 35, 25, 0.28), 0 0 0 10px rgba(36, 60, 45, 0.16);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(8px);
+}
+
+.register-form-section {
+	flex: 0.95;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+	padding: 54px 56px 54px 72px;
+	color: var(--color-white);
+}
+
+.register-bear-section {
+	flex: 1.05;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 74px 44px 40px;
+	overflow: hidden;
+}
+
+.register-bear-section::before {
+	content: "ELIGE TU RANGO";
+	position: absolute;
+	top: 28px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 18px;
+	font-weight: 800;
+	letter-spacing: 0.6px;
+	color: rgba(255, 255, 255, 0.95);
+}
+
+.register-bear-section::after {
+	content: "i";
+	position: absolute;
+	top: 26px;
+	right: 38px;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.98);
+	color: #4f7056;
+	font-size: 16px;
+	font-weight: 800;
+	line-height: 1;
+}
+
+.register-bear-grid {
+	width: min(100%, 560px);
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+	align-items: stretch;
+	justify-items: stretch;
+}
+
+.register-bear-option {
+	appearance: none;
+	border: 2px solid rgba(255, 255, 255, 0.18);
+	background: rgba(33, 72, 42, 0.22);
+	border-radius: 28px;
+	padding: 16px 14px 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: pointer;
+	transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	min-height: 220px;
+
+}
+
+.register-bear-option:hover {
+	transform: translateY(-2px);
+	border-color: rgba(255, 255, 255, 0.44);
+	background: rgba(42, 86, 50, 0.38);
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.register-bear-option.is-selected {
+	border-color: #f7d972;
+	background: rgba(57, 106, 63, 0.58);
+	box-shadow: 0 0 0 3px rgba(247, 217, 114, 0.18), 0 14px 26px rgba(0, 0, 0, 0.18);
+}
+
+.register-bear-option:focus-visible {
+	outline: none;
+	border-color: #f7d972;
+	box-shadow: 0 0 0 4px rgba(247, 217, 114, 0.24);
+}
+
+.register-bear-img {
+	width: 100%;
+	max-width: 200px;
+	object-fit: contain;
+	filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.18));
+	user-select: none;
+	pointer-events: none;
+}
+
+.register-bear-label {
+	color: rgba(255, 255, 255, 0.96);
+	font-size: 14px;
+	font-weight: 800;
+	letter-spacing: 0.3px;
+	text-align: center;
+	line-height: 1.15;
+	min-height: 34px;
+}
+
+.register-title {
+	font-size: 32px;
+	font-weight: 800;
+	letter-spacing: 1.1px;
+	line-height: 1.1;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.register-subtitle {
+	text-align: center;
+	font-size: 15px;
+	font-weight: 600;
+	color: rgba(255, 255, 255, 0.84);
+	margin-bottom: 28px;
+}
+
+.register-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+	max-width: 470px;
+	margin: 0 auto;
+}
+
+.input-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.input-group label {
+	font-size: 14px;
+	font-weight: 700;
+	color: rgba(255, 255, 255, 0.95);
+	padding-left: 2px;
+}
+
+.input-field-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-height: 48px;
+	padding: 5px 18px;
+	border-radius: 999px;
+	background: #2f633a;
+	border: 1px solid rgba(255, 255, 255, 0.04);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	transition: var(--transition-smooth);
+}
+
+.input-field-wrapper:focus-within {
+	border-color: rgba(255, 255, 255, 0.18);
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+	transform: translateY(-1px);
+}
+
+.input-icon {
+	width: 18px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: rgba(255, 255, 255, 0.58);
+	font-size: 17px;
+	flex: 0 0 auto;
+}
+
+.input-field-wrapper input {
+	flex: 1;
+	min-width: 0;
+	border: none;
+	outline: none;
+	background: transparent;
+	color: var(--color-white);
+	font-family: var(--font-primary);
+	font-size: 16px;
+	padding: 10px 0;
+}
+
+.input-field-wrapper input::placeholder {
+	color: rgba(255, 255, 255, 0.36);
+}
+
+.register-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 54px;
+    background-color: var(--color-grey-pill);
+    color: var(--color-dark-green);
+    border: none;
+    border-radius: 27px;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 10px;
+    box-shadow: var(--shadow-soft);
+}
+
+.register-submit-btn:hover {
+	transform: translateY(-2px);
+	background: #ffffff;
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+}
+
+.register-submit-btn:active {
+	transform: translateY(0);
+}
+
+.error-message {
+	margin-top: 2px;
+	color: #ffd0d0;
+	font-size: 13px;
+	font-weight: 600;
+	text-align: center;
+}
+
+@media (max-width: 980px) {
+	.register-card {
+		flex-direction: column;
+		min-height: auto;
+		max-width: 640px;
+	}
+
+	.register-bear-section {
+		min-height: 360px;
+		padding: 72px 22px 28px;
+		order: -1;
+	}
+
+	.register-bear-section::before {
+		top: 26px;
+		font-size: 16px;
+	}
+
+	.register-bear-grid {
+		width: min(100%, 560px);
+		gap: 14px;
+	}
+
+	.register-bear-option {
+		min-height: 190px;
+		border-radius: 24px;
+	}
+
+	.register-bear-img {
+		max-width: 160px;
+		height: 116px;
+	}
+
+	.register-form-section {
+		padding: 36px 24px 42px;
+	}
+
+	.register-form {
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 560px) {
+	.register-wrapper {
+		padding: 14px;
+	}
+
+	.register-card {
+		border-radius: 28px;
+	}
+
+	.register-form-section {
+		padding: 28px 18px 34px;
+	}
+
+	.register-title {
+		font-size: 26px;
+	}
+
+	.register-subtitle {
+		margin-bottom: 22px;
+	}
+
+	.input-field-wrapper {
+		min-height: 46px;
+		padding-inline: 16px;
+	}
+
+	.register-submit-btn {
+		width: 100%;
+	}
+
+	.register-bear-section {
+		min-height: 330px;
+	}
+
+	.register-bear-section::before {
+		font-size: 14px;
+	}
+
+	.register-bear-section::after {
+		right: 30px;
+	}
+
+	.register-bear-grid {
+		gap: 12px;
+	}
+
+	.register-bear-option {
+		min-height: 160px;
+		padding: 12px 10px 10px;
+		border-radius: 20px;
+	}
+
+	.register-bear-img {
+		max-width: 128px;
+		height: 96px;
+	}
+
+	.register-bear-label {
+		font-size: 13px;
+	}
+}
