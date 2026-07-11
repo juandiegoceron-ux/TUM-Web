@@ -40,13 +40,14 @@ export const Register = () => {
     const [age, setAge] = useState<number>(0);
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [showInfoModal, setShowInfoModal] = useState<boolean>(false);
     
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMsg(null);
         
-        if(age > 100 || age < 8){
-            setErrorMsg("La edad debe estar entre 8 y 100 años. Por favor, inténtalo de nuevo.");
+        if(age > 23 || age < 8){
+            setErrorMsg("La edad debe estar entre 8 y 23 años. Por favor, inténtalo de nuevo.");
             return;
         }
 
@@ -171,6 +172,14 @@ export const Register = () => {
                 </div>
 
                 <div className="register-bear-section">
+                    <button 
+                        type="button" 
+                        className="rank-info-btn"
+                        onClick={() => setShowInfoModal(true)}
+                        aria-label="Información de rangos"
+                    >
+                        i
+                    </button>
                     <div className="register-bear-grid" role="radiogroup" aria-label="Selecciona tu rango">
                         {roleOptions.map((option) => (
                             <button
@@ -186,6 +195,61 @@ export const Register = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal de Información de Rangos */}
+            {showInfoModal && (
+                <div className="rank-modal-overlay" onClick={() => setShowInfoModal(false)}>
+                    <div className="rank-modal" onClick={(e) => e.stopPropagation()}>
+                        <h3 className="rank-modal-title">¿Qué significan los rangos?</h3>
+                        
+                        <div className="rank-rows">
+                            <div className="rank-row">
+                                <div className="rank-badge-wrapper">
+                                    <img src={exploradorImg} alt="Explorador Curioso" className="rank-badge-img" />
+                                </div>
+                                <div className="rank-text-content">
+                                    <h4 className="rank-row-title">Explorador Curioso (8 a 11 años)</h4>
+                                    <p>Es el inicio de tu viaje. Aquí comienzas a descubrir el mundo de la ciencia, la naturaleza y la tecnología de forma divertida. Aprendes jugando, experimentando y haciendo tus primeras creaciones con ayuda de T.U.M.</p>
+                                </div>
+                            </div>
+
+                            <div className="rank-row">
+                                <div className="rank-badge-wrapper">
+                                    <img src={aprendizImg} alt="Aprendiz STEM" className="rank-badge-img" />
+                                </div>
+                                <div className="rank-text-content">
+                                    <h4 className="rank-row-title">Aprendiz STEM (12 a 15 años)</h4>
+                                    <p>Ya tienes más curiosidad y ganas de entender cómo funcionan las cosas. En este rango exploras robótica, programación y pequeños proyectos científicos. T.U.M. te guía para que aprendas a resolver problemas y a pensar como un inventor.</p>
+                                </div>
+                            </div>
+
+                            <div className="rank-row">
+                                <div className="rank-badge-wrapper">
+                                    <img src={jovenInnovadorImg} alt="Joven Innovador" className="rank-badge-img" />
+                                </div>
+                                <div className="rank-text-content">
+                                    <h4 className="rank-row-title">Joven Innovador (16 a 19 años)</h4>
+                                    <p>Es tu momento de crear. Aquí desarrollas tus propias ideas, proyectos y soluciones. Aprendes a trabajar en equipo, a usar herramientas más avanzadas y a convertir tus ideas en algo real. T.U.M. se convierte en tu compañero de innovación.</p>
+                                </div>
+                            </div>
+
+                            <div className="rank-row">
+                                <div className="rank-badge-wrapper">
+                                    <img src={mentorCreativoImg} alt="Mentor Creativo" className="rank-badge-img" />
+                                </div>
+                                <div className="rank-text-content">
+                                    <h4 className="rank-row-title">Mentor Creativo (20 a 23 años)</h4>
+                                    <p>Ya tienes experiencia y puedes compartirla con otros. En este rango te conviertes en guía y ejemplo para los más jóvenes. Diseñas proyectos más complejos, enseñas lo que sabes y ayudas a que otros también descubran su potencial junto a T.U.M.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="rank-modal-footer">
+                            Haz clic en cualquier parte para cerrar
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

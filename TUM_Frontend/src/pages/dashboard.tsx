@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Home, HelpCircle, User, Settings, Wifi, Accessibility, Lock, LogOut, Sparkles, ShieldAlert, Compass, Smile, Eye, Activity, Heart, Trees, Scale, BookOpen, type LucideIcon } from 'lucide-react'
 import '../styles/dashboard.css'
 import { useAuth } from '../context/AuthContext'
+import { GuiaTumGame } from '../components/GuiaTumGame'
 
 type DashboardTab = 'inicio' | 'conoce' | 'perfil' | 'ajustes'
 
@@ -238,29 +239,33 @@ function Dashboard() {
 
             {/* Interactive Game Modal (Simulation of starting a game) */}
             {showGameModal && (
-                <div className="game-modal-overlay animate-fade-in">
-                    <div className="game-modal">
-                        <div className="modal-header">
-                            <h3>🎮 Iniciando Minijuego</h3>
-                            <button className="close-modal-btn" onClick={() => setShowGameModal(false)}>×</button>
-                        </div>
-                        <div className="modal-body">
-                            <h2>{activeGameTitle}</h2>
-                            <div className="loader-container">
-                                <div className="game-loader"></div>
-                                <p>Cargando el entorno del videojuego...</p>
+                activeGameTitle === 'Guía a T.U.M' ? (
+                    <GuiaTumGame onClose={() => setShowGameModal(false)} />
+                ) : (
+                    <div className="game-modal-overlay animate-fade-in">
+                        <div className="game-modal">
+                            <div className="modal-header">
+                                <h3>🎮 Iniciando Minijuego</h3>
+                                <button className="close-modal-btn" onClick={() => setShowGameModal(false)}>×</button>
                             </div>
-                            <div className="game-mock-workspace">
-                                <span>[ Área del minijuego ejecutándose en canvas de React ]</span>
+                            <div className="modal-body">
+                                <h2>{activeGameTitle}</h2>
+                                <div className="loader-container">
+                                    <div className="game-loader"></div>
+                                    <p>Cargando el entorno del videojuego...</p>
+                                </div>
+                                <div className="game-mock-workspace">
+                                    <span>[ Área del minijuego ejecutándose en canvas de React ]</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="modal-play-btn" onClick={() => setShowGameModal(false)}>
-                                Comenzar Actividad
-                            </button>
+                            <div className="modal-footer">
+                                <button className="modal-play-btn" onClick={() => setShowGameModal(false)}>
+                                    Comenzar Actividad
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )
             )}
 
         </div>

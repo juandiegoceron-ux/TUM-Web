@@ -67,8 +67,7 @@
 	color: rgba(255, 255, 255, 0.95);
 }
 
-.register-bear-section::after {
-	content: "i";
+.rank-info-btn {
 	position: absolute;
 	top: 26px;
 	right: 38px;
@@ -83,6 +82,14 @@
 	font-size: 16px;
 	font-weight: 800;
 	line-height: 1;
+	border: none;
+	cursor: pointer;
+	transition: background 150ms ease, transform 150ms ease;
+}
+
+.rank-info-btn:hover {
+	background: #ffffff;
+	transform: scale(1.1);
 }
 
 .register-bear-grid {
@@ -373,4 +380,130 @@
 	.register-bear-label {
 		font-size: 13px;
 	}
+}
+
+/* Estilos del modal de rangos */
+.rank-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.rank-modal {
+  background: #E5E9E6;
+  color: #2E4A3F;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.rank-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2E4A3F;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 10px;
+}
+
+.rank-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.rank-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.rank-row:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.rank-badge-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #2E4A3F;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rank-badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rank-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rank-row-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2E4A3F;
+}
+
+.rank-text-content p {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #4A5A52;
+}
+
+.rank-modal-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #8A9A92;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

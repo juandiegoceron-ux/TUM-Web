@@ -1,0 +1,91 @@
+/* Design System Tokens */
+:root {
+  --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  /* Color Palette - Forest & Nature Theme */
+  --bg-gradient-start: #E2EFE0; /* Soft pale light green */
+  --bg-gradient-end: #83A98B;   /* Soft forest green */
+  --color-dark-green: #2E4A3F;   /* Deep forest green for main texts, buttons */
+  --color-medium-green: #3D6253;
+  --color-light-green: #E2EFE0;
+  --color-green-input: #233A31;  /* Very dark green for input fields */
+  --color-brown-banner: #5B4332; /* Rich brown for dashboard header */
+  --color-yellow-accent: #F4C430;/* Golden yellow for avatar and borders */
+  --color-white: #FFFFFF;
+  --color-grey-pill: #E5E7EB;
+  --color-card-bg: #2C4239;      /* Dark olive green for login box */
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-premium: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --shadow-soft: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Base resets */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-gradient-end);
+  color: var(--color-dark-green);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+}
+
+/* Micro-animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bounceSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(46, 74, 63, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 74, 63, 0.5);
+}

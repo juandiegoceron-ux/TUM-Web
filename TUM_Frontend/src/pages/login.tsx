@@ -83,6 +83,9 @@ function Login() {
                             </div>
                         </div>
 
+                        {errorMsg && <p className="error-message">{errorMsg}</p>}
+                        {isExpired && <p className="error-message" style={{ color: '#ffd0d0' }}>Tu sesión ha expirado. Por favor, inicia sesión de nuevo.</p>}
+
                         <button type="submit" className="login-submit-btn">
                             <span>Entrar</span>
                             <svg
