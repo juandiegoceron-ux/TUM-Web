@@ -16,7 +16,7 @@
     height: 100vh;
     max-width: 1440px;
     max-height: 900px;
-    background-color: #172d21;
+    background-color: #1a3024;
     border: 12px solid #3c5e4b;
     border-radius: 40px;
     display: flex;
@@ -25,6 +25,7 @@
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
     padding: 24px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .gt-game-container::before {
@@ -201,207 +202,561 @@
     align-items: center;
 }
 
-/* Pantalla del Lobby */
-.gt-main-lobby {
+/* Gameplay Layout */
+.gt-gameplay-container {
     flex: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    gap: 20px;
+    padding-top: 24px;
+    z-index: 10;
+    min-height: 0;
+}
+
+/* Panel de Controles Izquierdo */
+.gt-control-panel {
+    background-color: rgba(15, 30, 22, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+}
+
+.gt-panel-header {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 12px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gt-energy-icon {
+    font-size: 16px;
+    color: #ffd24c;
+}
+
+.gt-panel-energy-title {
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.gt-panel-steps {
+    margin-left: auto;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.gt-powerups-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.gt-powerups-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.gt-powerups-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gt-powerup-card {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1.5px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    padding: 12px 14px;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.gt-powerup-card:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.gt-powerup-card.selected {
+    border-color: #ffd24c;
+    background-color: rgba(255, 210, 76, 0.05);
+    box-shadow: 0 0 12px rgba(255, 210, 76, 0.1);
+}
+
+.gt-powerup-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background-color: #ffd24c;
+    color: #1a3024;
+    font-size: 10px;
+    font-weight: 900;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gt-powerup-icon {
+    color: #ffd24c;
+    margin-bottom: 2px;
+}
+
+.gt-powerup-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.gt-powerup-desc {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.2;
+}
+
+.gt-panel-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gt-clear-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.2s ease;
+}
+
+.gt-clear-btn:hover {
+    color: #ffffff;
+}
+
+.gt-start-btn {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 20px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: not-allowed;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
+}
+
+.gt-start-btn.active {
+    background-color: #ffd24c;
+    color: #1a3024;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(255, 210, 76, 0.25);
+}
+
+.gt-start-btn.active:hover {
+    transform: scale(1.03);
+    background-color: #ffffff;
+}
+
+/* Tablero Central */
+.gt-board-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    background-color: rgba(15, 30, 22, 0.5);
+    border-radius: 32px;
+    border: 1.5px solid rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    min-height: 0;
 }
 
-.gt-lobby-card {
-    width: min(90vw, 760px);
-    background-color: #3b2314;
-    border-radius: 36px;
-    border: 2px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.1);
-    padding: 36px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    animation: fadeInUp 0.4s ease-out;
-}
-
-.gt-lobby-subtitle {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: #ffd24c;
-    text-transform: uppercase;
-}
-
-.gt-lobby-title {
-    font-size: 32px;
-    font-weight: 800;
-    margin: 0;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-}
-
-.gt-lobby-desc {
-    font-size: 14px;
-    line-height: 1.5;
-    color: rgba(255, 255, 255, 0.75);
-    max-width: 580px;
-    margin: 0 0 10px;
-}
-
-.gt-lobby-modes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.gt-grid-container {
     width: 100%;
+    max-width: 540px;
+    aspect-ratio: 6/5;
+    display: flex;
+    flex-direction: column;
 }
 
-.gt-mode-card {
-    background-color: #1a3024;
-    border: 2px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    padding: 24px;
-    text-align: left;
+.gt-game-grid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gt-grid-row {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+}
+
+.gt-grid-cell {
+    flex: 1;
+    background-color: #1c3528;
+    border-radius: 16px;
+    border: 1.5px solid rgba(255, 255, 255, 0.03);
     cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-.gt-mode-card:hover {
-    transform: translateY(-4px);
-    border-color: #ffd24c;
-    background-color: #213c2e;
-}
-
-.gt-mode-label {
-    font-size: 10px;
-    font-weight: 800;
-    color: #ffd24c;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.gt-mode-title {
-    font-size: 19px;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 6px;
-}
-
-.gt-mode-bullets {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.gt-mode-bullets li {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.85);
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+    transition: transform 0.1s ease, background-color 0.2s ease;
 }
 
-.gt-bullet-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: #2ecc71;
-    display: inline-block;
+.gt-grid-cell:hover {
+    background-color: #244333;
+    transform: scale(1.03);
+}
+
+/* Inicio y Destino */
+.gt-grid-cell.is-start {
+    background-color: #f6edd9;
+    border-color: #ffd24c;
+}
+
+.gt-grid-cell.is-goal {
+    border: 2px dashed #2ecc71;
+    background-color: rgba(46, 204, 113, 0.05);
+}
+
+.gt-goal-flag {
+    font-size: 28px;
+    color: #2ecc71;
+}
+
+/* Camino del oso */
+.gt-grid-cell.in-path {
+    background-color: #7c834a;
+    border-color: #ffd24c;
+}
+
+.gt-grid-cell.has-error {
+    background-color: #7c3d25;
+    border-color: #ff5b5b;
+}
+
+.gt-bear-avatar {
+    font-size: 32px;
+    z-index: 5;
+    animation: floatBear 1.5s infinite alternate ease-in-out;
+}
+
+.gt-bear-avatar.active {
+    filter: drop-shadow(0 0 8px #ffd24c);
+}
+
+.gt-obstacle-icon {
+    font-size: 24px;
+}
+
+.gt-collectible-icon {
+    font-size: 22px;
+    animation: pulseCollectible 1.2s infinite alternate;
+}
+
+/* Conectores visuales del camino */
+.gt-path-connector {
+    position: absolute;
+    background-color: #ffd24c;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.gt-path-connector.dir-right {
+    height: 4px;
+    width: 60%;
+    left: -30%;
+    top: 48%;
+}
+
+.gt-path-connector.dir-left {
+    height: 4px;
+    width: 60%;
+    right: -30%;
+    top: 48%;
+}
+
+.gt-path-connector.dir-down {
+    width: 4px;
+    height: 60%;
+    top: -30%;
+    left: 48%;
+}
+
+.gt-path-connector.dir-up {
+    width: 4px;
+    height: 60%;
+    bottom: -30%;
+    left: 48%;
+}
+
+/* Panel de Diálogo Derecho */
+.gt-dialog-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.gt-dialog-box {
+    background-color: #3b2314;
+    border-radius: 24px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.gt-dialog-box::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 40px;
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent #3b2314 transparent transparent;
+}
+
+.gt-dialog-tag {
+    font-size: 11px;
+    font-weight: 900;
+    color: #ffd24c;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.gt-dialog-subtag {
+    background-color: rgba(255, 210, 76, 0.15);
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-size: 9px;
+    margin-left: 4px;
+}
+
+.gt-dialog-text {
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
 }
 
 /* Botones inferiores */
-.gt-footer-actions {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
+.gt-bottom-actions {
     display: flex;
-    gap: 14px;
-    z-index: 10;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
 }
 
-.gt-action-btn-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.gt-circle-action-btn {
-    width: 64px;
-    height: 64px;
+.gt-action-circle {
+    flex: 1;
+    aspect-ratio: 1;
     border-radius: 50%;
     background-color: #ffd24c;
     color: #1a3024;
     border: none;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    font-size: 10px;
+    font-weight: 800;
+    gap: 4px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.gt-circle-action-btn:hover {
-    transform: scale(1.08);
+.gt-action-circle:hover {
+    transform: scale(1.05);
     background-color: #ffffff;
 }
 
-.gt-circle-action-btn.active {
+.gt-action-circle.active {
     background-color: #ffffff;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 }
 
-.gt-circle-action-btn:active {
-    transform: scale(0.95);
+.gt-circle-label {
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
 }
 
-.gt-action-label {
-    font-size: 11px;
+/* Modal de Victoria */
+.gt-victory-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(12, 22, 17, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gt-victory-card {
+    width: 380px;
+    background-color: #3b2314;
+    border-radius: 36px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 2px 2px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: scaleUp 0.3s ease-out;
+}
+
+.gt-victory-bear {
+    font-size: 64px;
+    margin-bottom: 12px;
+}
+
+.gt-victory-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ffd24c;
+    margin: 0;
+}
+
+.gt-victory-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 24px;
+}
+
+.gt-rewards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+}
+
+.gt-reward-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
     font-weight: 800;
+}
+
+.gt-reward-icon-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.gt-reward-icon-circle.purple { background-color: #7b4eb2; }
+.gt-reward-icon-circle.yellow { background-color: #ffd24c; }
+.gt-reward-icon-circle.green { background-color: #2ecc71; }
+.gt-reward-icon-circle.gold { background-color: #e67e22; }
+
+.gt-reward-text {
     color: #ffffff;
 }
 
-.gt-result-btn {
-    background-color: #ffd24c;
-    color: #1a3024;
-    border: none;
-    border-radius: 24px;
-    padding: 12px 32px;
-    font-size: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(255, 210, 76, 0.3);
-    transition: transform 0.2s ease, background-color 0.2s ease;
+.gt-victory-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.gt-result-btn:hover {
+.gt-next-level-btn {
     background-color: #ffffff;
-    transform: scale(1.05);
+    color: #1a3024;
+    border: none;
+    border-radius: 20px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.gt-next-level-btn:hover {
+    background-color: #ffd24c;
+    transform: scale(1.02);
+}
+
+.gt-replay-level-btn {
+    background: none;
+    color: #ffffff;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.gt-replay-level-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #ffffff;
+}
+
+/* Animaciones */
+@keyframes floatBear {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+}
+
+@keyframes pulseCollectible {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(24px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 900px) {
-    .gt-lobby-modes {
+    .gt-gameplay-container {
         grid-template-columns: 1fr;
-    }
-    .gt-lobby-card {
-        padding: 24px;
+        overflow-y: auto;
     }
 }
