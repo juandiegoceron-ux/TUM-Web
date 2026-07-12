@@ -46,8 +46,8 @@ export const Register = () => {
         e.preventDefault();
         setErrorMsg(null);
         
-        if(age > 23 || age < 8){
-            setErrorMsg("La edad debe estar entre 8 y 23 años. Por favor, inténtalo de nuevo.");
+        if(age > 100 || age < 8){
+            setErrorMsg("La edad debe estar entre 8 y 100 años. Por favor, inténtalo de nuevo.");
             return;
         }
 
@@ -113,7 +113,7 @@ export const Register = () => {
                                 <input
                                     type="number"
                                     onChange={(e) => setAge(parseInt(e.target.value, 10))}
-                                    placeholder="8 a 23 años"
+                                    placeholder="8 a 100 años"
                                     required
                                 />
                             </div>
