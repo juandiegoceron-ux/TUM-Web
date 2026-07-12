@@ -11,9 +11,11 @@ interface Position {
     y: number;
 }
 
+type Difficulty = 'infantil' | 'adulto' | null;
 type Submode = 'tablet' | 'lidar' | 'observar' | null;
 
 export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
+    const [difficulty, setDifficulty] = useState<Difficulty>(null);
     const [path, setPath] = useState<Position[]>([{ x: 0, y: 0 }]);
     const [selectedPowerups, setSelectedPowerups] = useState<string[]>([]);
     const [submode, setSubmode] = useState<Submode>(null);
@@ -24,7 +26,7 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
 
     const cols = 6;
     const rows = 5;
-    const maxEnergy = 12;
+    const maxEnergy = difficulty === 'infantil' ? 16 : 12;
 
     const obstacles = [
         { x: 3, y: 0, type: 'tree' },
@@ -94,7 +96,7 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
         } else {
             setBubbleText("Define una ruta desde T.U.M. hasta la zona frondosa. Evita el río y el árbol caído.");
         }
-    }, [path, isObstacle]);
+    }, [path, isObstacle, maxEnergy]);
 
     const togglePowerup = (id: string) => {
         setSelectedPowerups(prev =>
@@ -116,6 +118,13 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
     const handleReset = () => {
         setPath([{ x: 0, y: 0 }]);
         setShowVictory(false);
+    };
+
+    const handleHeaderRepetir = () => {
+        setPath([{ x: 0, y: 0 }]);
+        setSelectedPowerups([]);
+        setShowVictory(false);
+        setDifficulty(null);
     };
 
     const isCellInPath = (x: number, y: number) => {
@@ -148,12 +157,14 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
 
                         <div className="gt-mission-pill">
                             <span className="gt-mission-label">MISIÓN 1 DE 3</span>
-                            <span className="gt-mission-title">Traza la ruta de T.U.M.</span>
+                            <span className="gt-mission-title">
+                                {difficulty === null ? 'Conociendo a T.U.M.' : 'Traza la ruta de T.U.M.'}
+                            </span>
                         </div>
                     </div>
 
                     <div className="gt-header-center">
-                        <button className="gt-circle-btn" onClick={handleReset} aria-label="Repetir">
+                        <button className="gt-circle-btn" onClick={handleHeaderRepetir} aria-label="Repetir">
                             <RotateCcw size={22} />
                             <span>Repetir</span>
                         </button>
@@ -181,178 +192,212 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
                     </div>
                 </div>
 
-                {/* Área de Juego */}
-                <div className="gt-gameplay-container">
-                    
-                    {/* Panel de Controles Izquierdo */}
-                    <div className="gt-control-panel">
-                        <div className="gt-panel-header">
-                            <span className="gt-energy-icon">⚡</span>
-                            <span className="gt-panel-energy-title">
-                                Energía {Math.max(0, maxEnergy - (path.length - 1))}/{maxEnergy}
-                            </span>
-                            <span className="gt-panel-steps">
-                                ▷ {path.length - 1} pasos
-                            </span>
+                {/* Área de Contenido Principal (Lobby o Tablero) */}
+                {difficulty === null ? (
+                    <div className="gt-main-lobby animate-fade-in">
+                        <div className="gt-lobby-card">
+                            <span className="gt-lobby-subtitle">MJ #1 · GUÍA A T.U.M.</span>
+                            <h2 className="gt-lobby-title">Elige tu dificultad</h2>
+                            <p className="gt-lobby-desc">
+                                T.U.M. se perdió en una zona nueva del Bosque Andino. Traza la mejor ruta para llevarlo a un lugar con comida, agua y árboles frondosos.
+                            </p>
+
+                            <div className="gt-lobby-modes">
+                                <div className="gt-mode-card" onClick={() => setDifficulty('infantil')}>
+                                    <span className="gt-mode-label">NIÑAS Y NIÑOS</span>
+                                    <h3 className="gt-mode-title">Modo Infantil</h3>
+                                    <ul className="gt-mode-bullets">
+                                        <li><span className="gt-bullet-dot"></span>Define una ruta libre</li>
+                                        <li><span className="gt-bullet-dot"></span>Sin límite de tiempo</li>
+                                        <li><span className="gt-bullet-dot"></span>Energía generosa</li>
+                                    </ul>
+                                </div>
+
+                                <div className="gt-mode-card" onClick={() => setDifficulty('adulto')}>
+                                    <span className="gt-mode-label">RETO DE EFICIENCIA</span>
+                                    <h3 className="gt-mode-title">Modo Adolescente / Adulto</h3>
+                                    <ul className="gt-mode-bullets">
+                                        <li><span className="gt-bullet-dot"></span>Busca la ruta más corta</li>
+                                        <li><span className="gt-bullet-dot"></span>Tiempo límite activo</li>
+                                        <li><span className="gt-bullet-dot"></span>Anticipa los riesgos</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                ) : (
+                    <div className="gt-gameplay-container animate-fade-in">
+                        
+                        {/* Panel de Controles Izquierdo */}
+                        <div className="gt-control-panel">
+                            <div className="gt-panel-header">
+                                <span className="gt-energy-icon">⚡</span>
+                                <span className="gt-panel-energy-title">
+                                    Energía {Math.max(0, maxEnergy - (path.length - 1))}/{maxEnergy}
+                                </span>
+                                <span className="gt-panel-steps">
+                                    ▷ {path.length - 1} pasos
+                                </span>
+                            </div>
 
-                        <div className="gt-powerups-section">
-                            <span className="gt-powerups-title">POWER-UPS</span>
-                            
-                            <div className="gt-powerups-grid">
-                                <button 
-                                    className={`gt-powerup-card ${selectedPowerups.includes('bloqueo') ? 'selected' : ''}`}
-                                    onClick={() => togglePowerup('bloqueo')}
-                                >
-                                    <div className="gt-powerup-badge">1</div>
-                                    <Shield size={20} className="gt-powerup-icon" />
-                                    <span className="gt-powerup-name">Bloqueo</span>
-                                    <span className="gt-powerup-desc">3 pasos sin gastar energía</span>
+                            <div className="gt-powerups-section">
+                                <span className="gt-powerups-title">POWER-UPS</span>
+                                
+                                <div className="gt-powerups-grid">
+                                    <button 
+                                        className={`gt-powerup-card ${selectedPowerups.includes('bloqueo') ? 'selected' : ''}`}
+                                        onClick={() => togglePowerup('bloqueo')}
+                                    >
+                                        <div className="gt-powerup-badge">1</div>
+                                        <Shield size={20} className="gt-powerup-icon" />
+                                        <span className="gt-powerup-name">Bloqueo</span>
+                                        <span className="gt-powerup-desc">3 pasos sin gastar energía</span>
+                                    </button>
+
+                                    <button 
+                                        className={`gt-powerup-card ${selectedPowerups.includes('turbo') ? 'selected' : ''}`}
+                                        onClick={() => togglePowerup('turbo')}
+                                    >
+                                        <div className="gt-powerup-badge">1</div>
+                                        <Zap size={20} className="gt-powerup-icon" />
+                                        <span className="gt-powerup-name">Turbo</span>
+                                        <span className="gt-powerup-desc">Atraviesa un obstáculo simple</span>
+                                    </button>
+
+                                    <button 
+                                        className={`gt-powerup-card ${selectedPowerups.includes('brujula') ? 'selected' : ''}`}
+                                        onClick={() => togglePowerup('brujula')}
+                                    >
+                                        <div className="gt-powerup-badge">2</div>
+                                        <Compass size={20} className="gt-powerup-icon" />
+                                        <span className="gt-powerup-name">Brújula</span>
+                                        <span className="gt-powerup-desc">Sugiere una ruta parcial</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="gt-panel-footer">
+                                <button className="gt-clear-btn" onClick={handleReset}>
+                                    <RefreshCw size={16} />
+                                    <span>Borrar ruta</span>
                                 </button>
-
+                                
                                 <button 
-                                    className={`gt-powerup-card ${selectedPowerups.includes('turbo') ? 'selected' : ''}`}
-                                    onClick={() => togglePowerup('turbo')}
+                                    className={`gt-start-btn ${(path[path.length - 1].x === 5 && path[path.length - 1].y === 4 && !hasObstacleInPath() && (path.length - 1) <= maxEnergy) ? 'active' : ''}`}
+                                    onClick={handleIniciar}
                                 >
-                                    <div className="gt-powerup-badge">1</div>
-                                    <Zap size={20} className="gt-powerup-icon" />
-                                    <span className="gt-powerup-name">Turbo</span>
-                                    <span className="gt-powerup-desc">Atraviesa un obstáculo simple</span>
-                                </button>
-
-                                <button 
-                                    className={`gt-powerup-card ${selectedPowerups.includes('brujula') ? 'selected' : ''}`}
-                                    onClick={() => togglePowerup('brujula')}
-                                >
-                                    <div className="gt-powerup-badge">2</div>
-                                    <Compass size={20} className="gt-powerup-icon" />
-                                    <span className="gt-powerup-name">Brújula</span>
-                                    <span className="gt-powerup-desc">Sugiere una ruta parcial</span>
+                                    <Play size={16} fill="currentColor" />
+                                    <span>Iniciar recorrido</span>
                                 </button>
                             </div>
                         </div>
 
-                        <div className="gt-panel-footer">
-                            <button className="gt-clear-btn" onClick={handleReset}>
-                                <RefreshCw size={16} />
-                                <span>Borrar ruta</span>
-                            </button>
-                            
-                            <button 
-                                className={`gt-start-btn ${(path[path.length - 1].x === 5 && path[path.length - 1].y === 4 && !hasObstacleInPath() && (path.length - 1) <= maxEnergy) ? 'active' : ''}`}
-                                onClick={handleIniciar}
-                            >
-                                <Play size={16} fill="currentColor" />
-                                <span>Iniciar recorrido</span>
-                            </button>
-                        </div>
-                    </div>
+                        {/* Tablero Central */}
+                        <div className="gt-board-wrapper">
+                            <div className="gt-grid-container">
+                                <div className="gt-game-grid">
+                                    {Array.from({ length: rows }).map((_, y) => (
+                                        <div key={y} className="gt-grid-row">
+                                            {Array.from({ length: cols }).map((_, x) => {
+                                                const isStart = x === 0 && y === 0;
+                                                const isGoal = x === 5 && y === 4;
+                                                const obstacle = obstacles.find(obs => obs.x === x && obs.y === y);
+                                                const seed = collectibles.find(col => col.x === x && col.y === y && col.type === 'seed');
+                                                const bromelia = collectibles.find(col => col.x === x && col.y === y && col.type === 'bromelia');
+                                                
+                                                const inPath = isCellInPath(x, y);
+                                                const pathIndex = getCellPathIndex(x, y);
+                                                const isLastOfPath = pathIndex === path.length - 1;
+                                                const hasError = inPath && isObstacle(x, y);
 
-                    {/* Tablero Central */}
-                    <div className="gt-board-wrapper">
-                        <div className="gt-grid-container">
-                            <div className="gt-game-grid">
-                                {Array.from({ length: rows }).map((_, y) => (
-                                    <div key={y} className="gt-grid-row">
-                                        {Array.from({ length: cols }).map((_, x) => {
-                                            const isStart = x === 0 && y === 0;
-                                            const isGoal = x === 5 && y === 4;
-                                            const obstacle = obstacles.find(obs => obs.x === x && obs.y === y);
-                                            const seed = collectibles.find(col => col.x === x && col.y === y && col.type === 'seed');
-                                            const bromelia = collectibles.find(col => col.x === x && col.y === y && col.type === 'bromelia');
-                                            
-                                            const inPath = isCellInPath(x, y);
-                                            const pathIndex = getCellPathIndex(x, y);
-                                            const isLastOfPath = pathIndex === path.length - 1;
-                                            const hasError = inPath && isObstacle(x, y);
+                                                return (
+                                                    <div 
+                                                        key={x} 
+                                                        className={`gt-grid-cell 
+                                                            ${isStart ? 'is-start' : ''} 
+                                                            ${isGoal ? 'is-goal' : ''} 
+                                                            ${inPath ? 'in-path' : ''} 
+                                                            ${hasError ? 'has-error' : ''}
+                                                        `}
+                                                        onClick={() => handleCellClick(x, y)}
+                                                    >
+                                                        {/* Mostrar línea de conexión visual */}
+                                                        {inPath && pathIndex > 0 && (
+                                                            <div className={`gt-path-connector dir-${
+                                                                path[pathIndex].x > path[pathIndex - 1].x ? 'right' :
+                                                                path[pathIndex].x < path[pathIndex - 1].x ? 'left' :
+                                                                path[pathIndex].y > path[pathIndex - 1].y ? 'down' : 'up'
+                                                            }`} />
+                                                        )}
 
-                                            return (
-                                                <div 
-                                                    key={x} 
-                                                    className={`gt-grid-cell 
-                                                        ${isStart ? 'is-start' : ''} 
-                                                        ${isGoal ? 'is-goal' : ''} 
-                                                        ${inPath ? 'in-path' : ''} 
-                                                        ${hasError ? 'has-error' : ''}
-                                                    `}
-                                                    onClick={() => handleCellClick(x, y)}
-                                                >
-                                                    {/* Mostrar línea de conexión visual */}
-                                                    {inPath && pathIndex > 0 && (
-                                                        <div className={`gt-path-connector dir-${
-                                                            path[pathIndex].x > path[pathIndex - 1].x ? 'right' :
-                                                            path[pathIndex].x < path[pathIndex - 1].x ? 'left' :
-                                                            path[pathIndex].y > path[pathIndex - 1].y ? 'down' : 'up'
-                                                        }`} />
-                                                    )}
-
-                                                    {/* Contenido de la celda */}
-                                                    {isStart && !isLastOfPath && (
-                                                        <div className="gt-bear-avatar">🐻</div>
-                                                    )}
-                                                    {isLastOfPath && (
-                                                        <div className="gt-bear-avatar active">🐻</div>
-                                                    )}
-                                                    {!inPath && obstacle?.type === 'tree' && (
-                                                        <span className="gt-obstacle-icon">🌲</span>
-                                                    )}
-                                                    {!inPath && obstacle?.type === 'river' && (
-                                                        <span className="gt-obstacle-icon">🌊</span>
-                                                    )}
-                                                    {!inPath && seed && (
-                                                        <span className="gt-collectible-icon">🌱</span>
-                                                    )}
-                                                    {!inPath && bromelia && (
-                                                        <span className="gt-collectible-icon">🌸</span>
-                                                    )}
-                                                    {isGoal && !isLastOfPath && (
-                                                        <span className="gt-goal-flag">⚐</span>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                ))}
+                                                        {/* Contenido de la celda */}
+                                                        {isStart && !isLastOfPath && (
+                                                            <div className="gt-bear-avatar">🐻</div>
+                                                        )}
+                                                        {isLastOfPath && (
+                                                            <div className="gt-bear-avatar active">🐻</div>
+                                                        )}
+                                                        {!inPath && obstacle?.type === 'tree' && (
+                                                            <span className="gt-obstacle-icon">🌲</span>
+                                                        )}
+                                                        {!inPath && obstacle?.type === 'river' && (
+                                                            <span className="gt-obstacle-icon">🌊</span>
+                                                        )}
+                                                        {!inPath && seed && (
+                                                            <span className="gt-collectible-icon">🌱</span>
+                                                        )}
+                                                        {!inPath && bromelia && (
+                                                            <span className="gt-collectible-icon">🌸</span>
+                                                        )}
+                                                        {isGoal && !isLastOfPath && (
+                                                            <span className="gt-goal-flag">⚐</span>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Globo de Diálogo de T.U.M. Izquierdo/Derecho */}
-                    <div className="gt-dialog-panel">
-                        <div className="gt-dialog-box">
-                            <span className="gt-dialog-tag">T.U.M. <span className="gt-dialog-subtag">IA · VOZ</span></span>
-                            <p className="gt-dialog-text">{bubbleText}</p>
+                        {/* Globo de Diálogo de T.U.M. Izquierdo/Derecho */}
+                        <div className="gt-dialog-panel">
+                            <div className="gt-dialog-box">
+                                <span className="gt-dialog-tag">T.U.M. <span className="gt-dialog-subtag">IA · VOZ</span></span>
+                                <p className="gt-dialog-text">{bubbleText}</p>
+                            </div>
+
+                            {/* Botones de acción inferiores derechos */}
+                            <div className="gt-bottom-actions">
+                                <button 
+                                    className={`gt-action-circle ${submode === 'tablet' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'tablet' ? null : 'tablet')}
+                                >
+                                    <Tablet size={22} />
+                                    <span className="gt-circle-label">Tablet</span>
+                                </button>
+                                
+                                <button 
+                                    className={`gt-action-circle ${submode === 'lidar' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'lidar' ? null : 'lidar')}
+                                >
+                                    <Camera size={22} />
+                                    <span className="gt-circle-label">Cámara / LIDAR</span>
+                                </button>
+
+                                <button 
+                                    className={`gt-action-circle ${submode === 'observar' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'observar' ? null : 'observar')}
+                                >
+                                    <Eye size={22} />
+                                    <span className="gt-circle-label">Observar</span>
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Botones de acción inferiores derechos */}
-                        <div className="gt-bottom-actions">
-                            <button 
-                                className={`gt-action-circle ${submode === 'tablet' ? 'active' : ''}`}
-                                onClick={() => setSubmode(submode === 'tablet' ? null : 'tablet')}
-                            >
-                                <Tablet size={22} />
-                                <span className="gt-circle-label">Tablet</span>
-                            </button>
-                            
-                            <button 
-                                className={`gt-action-circle ${submode === 'lidar' ? 'active' : ''}`}
-                                onClick={() => setSubmode(submode === 'lidar' ? null : 'lidar')}
-                            >
-                                <Camera size={22} />
-                                <span className="gt-circle-label">Cámara / LIDAR</span>
-                            </button>
-
-                            <button 
-                                className={`gt-action-circle ${submode === 'observar' ? 'active' : ''}`}
-                                onClick={() => setSubmode(submode === 'observar' ? null : 'observar')}
-                            >
-                                <Eye size={22} />
-                                <span className="gt-circle-label">Observar</span>
-                            </button>
-                        </div>
                     </div>
-
-                </div>
+                )}
 
                 {/* Modal de Victoria */}
                 {showVictory && (
