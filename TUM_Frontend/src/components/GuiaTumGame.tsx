@@ -224,6 +224,39 @@ export const GuiaTumGame = ({ onClose }: GuiaTumGameProps) => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Botones de acción inferiores derechos en el lobby */}
+                        <div className="gt-footer-actions">
+                            <div className="gt-action-btn-container">
+                                <button 
+                                    className={`gt-circle-action-btn ${submode === 'tablet' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'tablet' ? null : 'tablet')}
+                                >
+                                    <Tablet size={22} />
+                                </button>
+                                <span className="gt-action-label">Tablet</span>
+                            </div>
+                            
+                            <div className="gt-action-btn-container">
+                                <button 
+                                    className={`gt-circle-action-btn ${submode === 'lidar' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'lidar' ? null : 'lidar')}
+                                >
+                                    <Camera size={22} />
+                                </button>
+                                <span className="gt-action-label">Cámara / LIDAR</span>
+                            </div>
+
+                            <div className="gt-action-btn-container">
+                                <button 
+                                    className={`gt-circle-action-btn ${submode === 'observar' ? 'active' : ''}`}
+                                    onClick={() => setSubmode(submode === 'observar' ? null : 'observar')}
+                                >
+                                    <Eye size={22} />
+                                </button>
+                                <span className="gt-action-label">Observar</span>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <div className="gt-gameplay-container animate-fade-in">
